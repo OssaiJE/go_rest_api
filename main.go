@@ -2,6 +2,7 @@ package main
 
 import (
 	"go_rest_api/config"
+	"go_rest_api/database/migrations"
 
 	"github.com/gin-gonic/gin"
 )
@@ -9,6 +10,7 @@ import (
 func init() {
 	config.LoadEnv()
 	config.ConnectDB()
+    migrations.Migration()
 }
 
 func main() {
