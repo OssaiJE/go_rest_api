@@ -2,6 +2,7 @@ package main
 
 import (
 	"go_rest_api/config"
+	"go_rest_api/controllers"
 	"go_rest_api/database/migrations"
 
 	"github.com/gin-gonic/gin"
@@ -10,15 +11,13 @@ import (
 func init() {
 	config.LoadEnv()
 	config.ConnectDB()
-    migrations.Migration()
+	migrations.Migration()
 }
 
 func main() {
 	r := gin.Default()
-	r.GET("/", func(c *gin.Context) {
-		c.JSON(200, gin.H{
-			"message": "pong yea",
-		})
-	})
+	r.POST("/post", controllers.CreatePost)
+	r.GET("/posts", controllers.GetPosts)
+	r.GET("/post/:id", controllers.GetAPost)
 	r.Run() // listen and serve on 127.0.0.1:4000
 }
