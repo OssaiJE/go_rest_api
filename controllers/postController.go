@@ -44,3 +44,34 @@ func GetAPost(c *gin.Context) {
 
 	c.JSON(200, gin.H{"message": "Post successfully retreived", "post": post})
 }
+
+func UpdatePost(c *gin.Context) {
+	id := c.Param("id")
+
+	var body struct {
+		Body  string
+		Title string
+	}
+
+	c.Bind(&body)
+
+	var post models.Post
+	config.DB.First(&post, id)
+	config.DB.Model(&post).Updates(models.Post{
+		Title: body.Title,
+		Body:  body.Body,
+	})
+
+	c.JSON(200, gin.H{
+		"message": "Post updated",
+		"post":    post,
+	})
+}
+
+func DeletePost(c *gin.Context) {
+	id := c.Param("id")
+
+	config.DB.Delete(&models.Post{}, id)
+
+	c.JSON(200, gin.H{"message": "Post deleted."})
+}
